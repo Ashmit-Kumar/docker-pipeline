@@ -1,0 +1,31 @@
+services:
+  frontend:
+    image: ashmit1020/blog-frontend:v1  # Replace with the image name of your production app
+    ports:
+      - "80:80"  # Expose port 80 to access the app
+    networks:
+      - app-network
+    env_file:
+      - .env  # Use the .env file from your host machine for the production service
+
+  backend:
+   # build: /home/ashmit/code/kubernetes_blog_backend/  # Replace with the image name of your development app
+    image: ashmit1020/blog-backend:v1
+    ports:
+      - "5004:5004"  # Expose port 5004 to access the dev server
+    command: ["npm","start"]  # Start the development server (or any other command you use)
+    volumes:
+      - ../kubernetes_blog_backend:/app  # Mount the current directory to allow live code updates
+    environment:
+      - NODE_ENV=development
+    networks:
+      - app-network
+    depends_on:
+      - frontend
+
+networks:
+  app-network:
+    driver: bridge
+
+
+
