@@ -38,7 +38,7 @@ pipeline {
             steps {
                 script {
                     // Push images to Docker registry (if required)
-                    docker.withRegistry('https://${DOCKER_REGISTRY}', 'docker-cred') {
+                    docker.withRegistry('https://${DOCKER_REGISTRY}', 'docker-hub-pat-credentials') {
                         docker.image("${IMAGE_1_NAME}:${BUILD_ID}").push()
                         docker.image("${IMAGE_2_NAME}:${BUILD_ID}").push()
                     }
