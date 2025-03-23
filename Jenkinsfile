@@ -2,10 +2,9 @@ pipeline {
     agent any
 
     environment {
-        // Define your Docker images
-        IMAGE_1_NAME = 'blog'
-        IMAGE_2_NAME = 'blog-api'
-        DOCKER_REGISTRY = 'docker.io' // Optional if you want to push to a registry
+        DOCKER_REGISTRY = 'docker.io'  // Docker registry (can be Docker Hub or another registry)
+        IMAGE_1_NAME = 'ashmit1020/blog-frontend:v1.2'  // Frontend image name
+        IMAGE_2_NAME = 'ashmit1020/blog-backend:v1'  // Backend image name
     }
 
     stages {
@@ -16,41 +15,46 @@ pipeline {
             }
         }
 
-        stage('Build Image 1') {
+        stage('Set up Docker Compose') {
             steps {
                 script {
-                    // Build Docker image 1
-                    docker.build("${IMAGE_1_NAME}:${BUILD_ID}")
+                    // Make sure Docker Compose is available
+                    sh 'docker-compose --version'
+                    
+                    // Pull the pre-built images from Docker registry (if needed)
+                    // This step ensures that the images are pulled before we run them.
+                    sh "docker pull ${IMAGE_1_NAME}"
+                    sh "docker pull ${IMAGE_2_NAME}"
                 }
             }
         }
 
-        stage('Build Image 2') {
+        stage('Run Docker Compose') {
             steps {
                 script {
-                    // Build Docker image 2
-                    docker.build("${IMAGE_2_NAME}:${BUILD_ID}")
+                    // Run the docker-compose command to start up the services
+                    sh 'docker-compose -f docker-compose.yml up -d'  // Use '-d' for detached mode
                 }
             }
         }
 
-        stage('Push Images') {
+        stage('Test Application') {
             steps {
                 script {
-                    // Push images to Docker registry (if required)
-                    docker.withRegistry('https://${DOCKER_REGISTRY}', 'docker-hub-pat-credentials') {
-                        docker.image("${IMAGE_1_NAME}:${BUILD_ID}").push()
-                        docker.image("${IMAGE_2_NAME}:${BUILD_ID}").push()
-                    }
+                    // Run your tests or checks here
+                    // For example, checking if the services are running
+                    sh 'docker ps'  // List all running containers to confirm the services are up
                 }
             }
         }
-    }
 
-    post {
-        always {
-            // Clean up Docker images after the build
-            sh 'docker system prune -f'
+        stage('Tear Down') {
+            steps {
+                script {
+                    // Optionally, shut down the services after tests
+                    sh 'docker-compose down'
+                }
+            }
         }
     }
 }
