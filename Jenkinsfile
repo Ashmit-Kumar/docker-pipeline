@@ -1,5 +1,5 @@
 pipeline {
-    agent {label 'fedora'}
+    agent any
 
     environment {
         DOCKER_REGISTRY = 'docker.io'  // Docker registry (can be Docker Hub or another registry)
