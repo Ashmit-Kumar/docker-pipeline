@@ -1,5 +1,5 @@
 pipeline {
-    agent {label 'ash'}
+    agent any
 
     environment {
         // Define your Docker images
