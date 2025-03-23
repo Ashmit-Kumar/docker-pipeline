@@ -6,15 +6,16 @@ pipeline {
         IMAGE_1_NAME = 'ashmit1020/blog-frontend:v1.2'  // Frontend image name
         IMAGE_2_NAME = 'ashmit1020/blog-backend:v1'  // Backend image name
 	DOCKER_USER = 'ashmit1020'  // Replace with your Docker Hub username
-        DOCKER_TOKEN = credentials('docker-credential')  // Use Jenkins credentials for storing the token
-    }
+ }
 
     stages {
 	stage('Docker Login') {
             steps {
                 script {
-                    // Log in to Docker using the Personal Access Token
-                    sh "echo '${DOCKER_TOKEN}' | docker login -u ${DOCKER_USER} --password-stdin"
+                    withCredentials([string(credentialsId: 'docker-pat', variable: 'DOCKER_TOKEN')]) {
+                        // Use the Docker Personal Access Token securely
+                        sh "echo \$DOCKER_TOKEN | docker login -u ${DOCKER_USER} --password-stdin"
+                    }
                 }
             }
         }
