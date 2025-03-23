@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_REGISTRY = 'docker.io'  // Docker registry (can be Docker Hub or another registry)
-        IMAGE_1_NAME = 'ashmit1020/blog-frontend:v1.2'  // Frontend image name
+        IMAGE_1_NAME = 'ashmit1020/blog-frontend:v1.3'  // Frontend image name
         IMAGE_2_NAME = 'ashmit1020/blog-backend:v1'  // Backend image name
 	DOCKER_USER = 'ashmit1020'  // Replace with your Docker Hub username
  }
