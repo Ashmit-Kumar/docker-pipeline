@@ -34,8 +34,8 @@ pipeline {
                     
                     // Pull the pre-built images from Docker registry (if needed)
                     // This step ensures that the images are pulled before we run them.
-                    sh "docker pull ${IMAGE_1_NAME}"
-                    sh "docker pull ${IMAGE_2_NAME}"
+                    sh "sudo docker pull ${IMAGE_1_NAME}"
+                    sh "sudo docker pull ${IMAGE_2_NAME}"
                 }
             }
         }
@@ -44,7 +44,7 @@ pipeline {
             steps {
                 script {
                     // Run the docker-compose command to start up the services
-                    sh 'docker-compose -f docker-compose.yml up -d'  // Use '-d' for detached mode
+                    sh 'sudo docker-compose -f docker-compose.yml up -d'  // Use '-d' for detached mode
                 }
             }
         }
@@ -54,7 +54,7 @@ pipeline {
                 script {
                     // Run your tests or checks here
                     // For example, checking if the services are running
-                    sh 'docker ps'  // List all running containers to confirm the services are up
+                    sh 'sudo docker ps'  // List all running containers to confirm the services are up
                 }
             }
         }
@@ -63,7 +63,7 @@ pipeline {
             steps {
                 script {
                     // Optionally, shut down the services after tests
-                    sh 'docker-compose down'
+                    sh 'sudo docker-compose down'
                 }
             }
         }
