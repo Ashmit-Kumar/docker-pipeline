@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: ashmit1020/blog-frontend:v1  # Replace with the image name of your production app
+    image: ashmit1020/blog-frontend:v1.2  # Replace with the image name of your production app
     ports:
       - "80:80"  # Expose port 80 to access the app
     networks:
