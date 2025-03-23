@@ -57,15 +57,6 @@ pipeline {
                     sh 'sudo docker ps'  // List all running containers to confirm the services are up
                 }
             }
-        }
-
-        stage('Tear Down') {
-            steps {
-                script {
-                    // Optionally, shut down the services after tests
-                    sh 'sudo docker-compose down'
-                }
-            }
-        }
+         }
     }
 }
